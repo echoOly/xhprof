@@ -109,33 +109,32 @@ class XHProfRuns_Default implements iXHProfRuns {
   * When setting the `id` column, consider the length of the prefix you're specifying in $this->prefix
   * 
   *
-CREATE TABLE `details` (
-  `id` char(17) NOT NULL,
-  `url` varchar(255) default NULL,
-  `c_url` varchar(255) default NULL,
-  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `server name` varchar(64) default NULL,
-  `perfdata` MEDIUMBLOB,
-  `type` tinyint(4) default NULL,
-  `cookie` BLOB,
-  `post` BLOB,
-  `get` BLOB,
-  `pmu` int(11) unsigned default NULL,
-  `wt` int(11) unsigned default NULL,
-  `cpu` int(11) unsigned default NULL,
-  `server_id` char(3) NOT NULL default 't11',
-  `aggregateCalls_include` varchar(255) DEFAULT NULL,
-  `log_id` char(17) NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `url` (`url`),
-  KEY `c_url` (`c_url`),
-  KEY `cpu` (`cpu`),
-  KEY `wt` (`wt`),
-  KEY `pmu` (`pmu`),
-  KEY `log_id` (`log_id`),
-  KEY `timestamp` (`timestamp`)
-) ENGINE=innodb DEFAULT CHARSET=utf8;
-  
+ CREATE TABLE `details` (
+ `id` char(17) NOT NULL,
+ `url` varchar(255) NOT NULL default '',
+ `c_url` varchar(255) NOT NULL default '',
+ `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+ `server name` varchar(64) NOT NULL default '',
+ `perfdata` MEDIUMBLOB,
+ `type` tinyint(4) NOT NULL default '0',
+ `cookie` BLOB,
+ `post` BLOB,
+ `get` BLOB,
+ `pmu` int(11) unsigned NOT NULL  default '0',
+ `wt` int(11) unsigned NOT NULL default '0',
+ `cpu` int(11) unsigned NOT NULL default '0',
+ `server_id` varchar(32) NOT NULL default 't11',
+ `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
+ `log_id` char(17) NOT NULL,
+ PRIMARY KEY  (`id`),
+ KEY `url` (`url`),
+ KEY `c_url` (`c_url`),
+ KEY `cpu` (`cpu`),
+ KEY `wt` (`wt`),
+ KEY `pmu` (`pmu`),
+ KEY `log_id` (`log_id`),
+ KEY `timestamp` (`timestamp`)
+ ) ENGINE=innodb DEFAULT CHARSET=utf8;
 */
 
     
@@ -449,8 +448,8 @@ CREATE TABLE `details` (
     $sname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
     $urlArr = parse_url($url);
 
-        $sql['url'] = $this->db->escape($url);
-        $sql['c_url'] = $this->db->escape(($urlArr['path']));
+    $sql['url'] = $this->db->escape($url);
+        $sql['c_url'] = $this->db->escape($urlArr['path']);
         $sql['servername'] = $this->db->escape($sname);
         $sql['type']  = (int) (isset($xhprof_details['type']) ? $xhprof_details['type'] : 0);
         $sql['timestamp'] = $this->db->escape($_SERVER['REQUEST_TIME']);
