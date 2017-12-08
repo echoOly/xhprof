@@ -168,7 +168,7 @@ if($domain_weight = getenv('xhprof_weight')) {
     ```
 * 访问采样数据，请求`/xhprof/xhprof_html/index.php`
 效果图：
-    * 首页列表 ![首页列表](./examples/homelist.png)
-    * 调用详细1 ![调用详细1](./examples/detail1.png)
-    * 调用详细2 ![调用详细2](./examples/detail2.png)
-    * 调用关系图 ![调用关系图](./examples/callgraph.png)
+    * 首页列表 ![首页列表](./statics/homelist.png)
+    * 调用详细1 ![调用详细1](./statics/detail1.png)
+    * 调用详细2 ![调用详细2](./statics/detail2.png)
+    * 调用关系图 ![调用关系图](./statics/callgraph.png)
