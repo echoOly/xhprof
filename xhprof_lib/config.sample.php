@@ -57,6 +57,10 @@ $controlIPs = false; //Disables access controlls completely.
 
 //$otherURLS = array();
 
+$controlUrls = false;
+//$controlUrls = array();
+//$controlUrls[] = "/userinfo";   //you'll want to add your own url here
+
 // ignore builtin functions and call_user_func* during profiling
 //$ignoredFunctions = array('call_user_func', 'call_user_func_array', 'socket_select');
 
