@@ -125,15 +125,16 @@ class XHProfRuns_Default implements iXHProfRuns {
  `cpu` int(11) unsigned NOT NULL default '0',
  `server_id` varchar(32) NOT NULL default 't11',
  `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
+ `log_id` char(17) NOT NULL,
  PRIMARY KEY  (`id`),
  KEY `url` (`url`),
  KEY `c_url` (`c_url`),
  KEY `cpu` (`cpu`),
  KEY `wt` (`wt`),
  KEY `pmu` (`pmu`),
+ KEY `log_id` (`log_id`),
  KEY `timestamp` (`timestamp`)
  ) ENGINE=innodb DEFAULT CHARSET=utf8;
- 
 */
 
     
@@ -400,7 +401,11 @@ class XHProfRuns_Default implements iXHProfRuns {
 		a supposedly unobtrusive profiler makes for you. 
 		
 		*/
-
+        $log_id = defined('LOG_ID') ? LOG_ID : $run_id;
+        $log_id = isset($_SERVER['LOGID']) ? $_SERVER['LOGID'] : $log_id;
+        $log_id = isset($_SERVER['HTTP_X_BD_LOGID']) ? $_SERVER['HTTP_X_BD_LOGID'] : $log_id;
+        $sql['log_id'] = $_GET['log_id'] = $log_id;
+	
 		if (!isset($GLOBALS['_xhprof']['serializer']) || strtolower($GLOBALS['_xhprof']['serializer'] == 'php')) {
 			$sql['get'] = $this->db->escape(serialize($_GET));
 			$sql['cookie'] = $this->db->escape(serialize($_COOKIE));
@@ -439,20 +444,19 @@ class XHProfRuns_Default implements iXHProfRuns {
 			$sql['data'] = $this->db->escape(gzcompress(json_encode($xhprof_data), 2));
 		}
 			
-        
-	$url   = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
- 	$sname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+    $url   = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
+    $sname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+    $urlArr = parse_url($url);
 
-	
-        $sql['url'] = $this->db->escape($url);
-        $sql['c_url'] = $this->db->escape(_urlSimilartor($url));
+    $sql['url'] = $this->db->escape($url);
+        $sql['c_url'] = $this->db->escape($urlArr['path']);
         $sql['servername'] = $this->db->escape($sname);
         $sql['type']  = (int) (isset($xhprof_details['type']) ? $xhprof_details['type'] : 0);
         $sql['timestamp'] = $this->db->escape($_SERVER['REQUEST_TIME']);
 	$sql['server_id'] = $this->db->escape($_xhprof['servername']);
         $sql['aggregateCalls_include'] = getenv('xhprof_aggregateCalls_include') ? getenv('xhprof_aggregateCalls_include') : '';
         
-        $query = "INSERT INTO `details` (`id`, `url`, `c_url`, `timestamp`, `server name`, `perfdata`, `type`, `cookie`, `post`, `get`, `pmu`, `wt`, `cpu`, `server_id`, `aggregateCalls_include`) VALUES('$run_id', '{$sql['url']}', '{$sql['c_url']}', FROM_UNIXTIME('{$sql['timestamp']}'), '{$sql['servername']}', '{$sql['data']}', '{$sql['type']}', '{$sql['cookie']}', '{$sql['post']}', '{$sql['get']}', '{$sql['pmu']}', '{$sql['wt']}', '{$sql['cpu']}', '{$sql['server_id']}', '{$sql['aggregateCalls_include']}')";
+        $query = "INSERT INTO `details` (`id`, `url`, `c_url`, `timestamp`, `server name`, `perfdata`, `type`, `cookie`, `post`, `get`, `pmu`, `wt`, `cpu`, `server_id`, `aggregateCalls_include`, `log_id`) VALUES('$run_id', '{$sql['url']}', '{$sql['c_url']}', FROM_UNIXTIME('{$sql['timestamp']}'), '{$sql['servername']}', '{$sql['data']}', '{$sql['type']}', '{$sql['cookie']}', '{$sql['post']}', '{$sql['get']}', '{$sql['pmu']}', '{$sql['wt']}', '{$sql['cpu']}', '{$sql['server_id']}', '{$sql['aggregateCalls_include']}', '{$sql['log_id']}')";
         
         $this->db->query($query);
         if ($this->db->affectedRows($this->db->linkID) == 1)

@@ -20,12 +20,14 @@
  `cpu` int(11) unsigned NOT NULL default '0',
  `server_id` varchar(32) NOT NULL default 't11',
  `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
+ `log_id` char(17) NOT NULL,
  PRIMARY KEY  (`id`),
  KEY `url` (`url`),
  KEY `c_url` (`c_url`),
  KEY `cpu` (`cpu`),
  KEY `wt` (`wt`),
  KEY `pmu` (`pmu`),
+ KEY `log_id` (`log_id`),
  KEY `timestamp` (`timestamp`)
  ) ENGINE=innodb DEFAULT CHARSET=utf8;
 
