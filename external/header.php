@@ -126,8 +126,6 @@ foreach($ignoreURLs as $url){
 }
 unset($ignoreURLs);
 
-unset($url);
-
 // Certain domains should never be profiled.
 foreach($ignoreDomains as $domain){
     if (stripos($_SERVER['HTTP_HOST'], $domain) !== FALSE)
@@ -138,6 +136,19 @@ foreach($ignoreDomains as $domain){
 }
 unset($ignoreDomains);
 unset($domain);
+
+if ($controlUrls !== false && $_xhprof['doprofile'] === true) {
+    $_xhprof['doprofile'] = false;
+    foreach($controlUrls as $url){
+        if (stripos($_SERVER['REQUEST_URI'], $url) !== FALSE) {
+            $_xhprof['doprofile'] = true;
+            break;
+        }
+    }
+}
+unset($controlUrls);
+unset($url);
+
 
 //Display warning if extension not available
 if ($_xhprof['ext_name'] && $_xhprof['doprofile'] === true) {

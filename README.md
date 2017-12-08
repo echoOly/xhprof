@@ -132,27 +132,27 @@ if($domain_weight = getenv('xhprof_weight')) {
 * 创建数据库 并导入表结构：
 如果使用`mysql5.6` 会报` Incorrect integer value: '' for column 'cpu' at row 1`错误，请把表结构中的`int`字段都改成`varchar`；
 ```
- CREATE TABLE `details` (
- `id` char(17) NOT NULL,
- `url` varchar(255) default NULL,
- `c_url` varchar(255) default NULL,
+  CREATE TABLE `details` (
+ `id` char(17) NOT NULL default '0',
+ `url` varchar(255) NOT NULL default '',
+ `c_url` varchar(255) NOT NULL default '',
  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
- `server name` varchar(64) default NULL,
+ `server name` varchar(64) NOT NULL default '',
  `perfdata` MEDIUMBLOB,
- `type` tinyint(4) default NULL,
+ `type` tinyint(4) NOT NULL default '0',
  `cookie` BLOB,
  `post` BLOB,
  `get` BLOB,
- `pmu` int(11) unsigned default NULL,
- `wt` int(11) unsigned default NULL,
- `cpu` int(11) unsigned default NULL,
+ `pmu` int(11) unsigned NOT NULL  default '0',
+ `wt` int(11) unsigned NOT NULL default '0',
+ `cpu` int(11) unsigned NOT NULL default '0',
  `server_id` varchar(32) NOT NULL default 't11',
- `aggregateCalls_include` varchar(255) DEFAULT NULL,
+ `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
  PRIMARY KEY  (`id`),
  KEY `url` (`url`),
  KEY `c_url` (`c_url`),
  KEY `cpu` (`cpu`),
- KEY `wt` (`wt`),                                                                                                                                      
+ KEY `wt` (`wt`),
  KEY `pmu` (`pmu`),
  KEY `timestamp` (`timestamp`)
  ) ENGINE=innodb DEFAULT CHARSET=utf8;
@@ -168,7 +168,7 @@ if($domain_weight = getenv('xhprof_weight')) {
     ```
 * 访问采样数据，请求`/xhprof/xhprof_html/index.php`
 效果图：
-    * 首页列表 ![首页列表](./examples/homelist.png)
-    * 调用详细1 ![调用详细1](./examples/detail1.png)
-    * 调用详细2 ![调用详细2](./examples/detail2.png)
-    * 调用关系图 ![调用关系图](./examples/callgraph.png)
+    * 首页列表 ![首页列表](./statics/homelist.png)
+    * 调用详细1 ![调用详细1](./statics/detail1.png)
+    * 调用详细2 ![调用详细2](./statics/detail2.png)
+    * 调用关系图 ![调用关系图](./statics/callgraph.png)

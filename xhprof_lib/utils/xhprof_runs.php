@@ -109,42 +109,37 @@ class XHProfRuns_Default implements iXHProfRuns {
   * When setting the `id` column, consider the length of the prefix you're specifying in $this->prefix
   * 
   *
-CREATE TABLE `details` (
-  `id` char(17) NOT NULL,
-  `url` varchar(255) default NULL,
-  `c_url` varchar(255) default NULL,
-  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `server name` varchar(64) default NULL,
-  `perfdata` MEDIUMBLOB,
-  `type` tinyint(4) default NULL,
-  `cookie` BLOB,
-  `post` BLOB,
-  `get` BLOB,
-  `pmu` int(11) unsigned default NULL,
-  `wt` int(11) unsigned default NULL,
-  `cpu` int(11) unsigned default NULL,
-  `server_id` char(3) NOT NULL default 't11',
-  `aggregateCalls_include` varchar(255) DEFAULT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `url` (`url`),
-  KEY `c_url` (`c_url`),
-  KEY `cpu` (`cpu`),
-  KEY `wt` (`wt`),
-  KEY `pmu` (`pmu`),
-  KEY `timestamp` (`timestamp`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-  
+ CREATE TABLE `details` (
+ `id` char(17) NOT NULL,
+ `url` varchar(255) NOT NULL default '',
+ `c_url` varchar(255) NOT NULL default '',
+ `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+ `server name` varchar(64) NOT NULL default '',
+ `perfdata` MEDIUMBLOB,
+ `type` tinyint(4) NOT NULL default '0',
+ `cookie` BLOB,
+ `post` BLOB,
+ `get` BLOB,
+ `pmu` int(11) unsigned NOT NULL  default '0',
+ `wt` int(11) unsigned NOT NULL default '0',
+ `cpu` int(11) unsigned NOT NULL default '0',
+ `server_id` varchar(32) NOT NULL default 't11',
+ `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
+ PRIMARY KEY  (`id`),
+ KEY `url` (`url`),
+ KEY `c_url` (`c_url`),
+ KEY `cpu` (`cpu`),
+ KEY `wt` (`wt`),
+ KEY `pmu` (`pmu`),
+ KEY `timestamp` (`timestamp`)
+ ) ENGINE=innodb DEFAULT CHARSET=utf8;
+ 
 */
 
     
   private function gen_run_id($type) 
   {
-      $log_id = uniqid();
-      $log_id = defined('LOG_ID') ? LOG_ID : $log_id;
-      $log_id = isset($_SERVER['LOGID']) ? $_SERVER['LOGID'] : $log_id;
-      $log_id = isset($_SERVER['HTTP_X_BD_LOGID']) ? $_SERVER['HTTP_X_BD_LOGID'] : $log_id;
-      return $log_id;
-    //return uniqid();
+      return uniqid();
   }
   
   /**
@@ -431,9 +426,9 @@ CREATE TABLE `details` (
 		}
         
         
-	$sql['pmu'] = isset($xhprof_data['main()']['pmu']) ? $xhprof_data['main()']['pmu'] : '';
- 	$sql['wt']  = isset($xhprof_data['main()']['wt'])  ? $xhprof_data['main()']['wt']  : '';
-	$sql['cpu'] = isset($xhprof_data['main()']['cpu']) ? $xhprof_data['main()']['cpu'] : '';        
+	$sql['pmu'] = isset($xhprof_data['main()']['pmu']) ? $xhprof_data['main()']['pmu'] : '0';
+ 	$sql['wt']  = isset($xhprof_data['main()']['wt'])  ? $xhprof_data['main()']['wt']  : '0';
+	$sql['cpu'] = isset($xhprof_data['main()']['cpu']) ? $xhprof_data['main()']['cpu'] : '0';        
 
 
 		// The value of 2 seems to be light enugh that we're not killing the server, but still gives us lots of breathing room on 
@@ -447,10 +442,10 @@ CREATE TABLE `details` (
         
 	$url   = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF'];
  	$sname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
-    $urlArr = parse_url($url);
+
 	
         $sql['url'] = $this->db->escape($url);
-        $sql['c_url'] = $this->db->escape(($urlArr['path']));
+        $sql['c_url'] = $this->db->escape(_urlSimilartor($url));
         $sql['servername'] = $this->db->escape($sname);
         $sql['type']  = (int) (isset($xhprof_details['type']) ? $xhprof_details['type'] : 0);
         $sql['timestamp'] = $this->db->escape($_SERVER['REQUEST_TIME']);

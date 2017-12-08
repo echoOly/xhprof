@@ -5,7 +5,7 @@
  *
  *
  CREATE TABLE `details` (
- `id` char(17) NOT NULL default '0',
+ `id` char(17) NOT NULL,
  `url` varchar(255) NOT NULL default '',
  `c_url` varchar(255) NOT NULL default '',
  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
