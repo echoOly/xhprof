@@ -39,6 +39,17 @@ Installation
 ```angularjs
 brew install php5-xhprof php5-mysql
 ```
+
+> 注意：
+> 对于xhprof扩展，php5.4及以上版本不能在pecl中下载，不支持。需要在github上下载https://github.com/facebook/xhprof。
+> 另外xhprof已经很久没有更新过了，截至目前还不支持php7。当前目录extension已经存在源代码，只需要编译一下，如下：
+```
+cd extension/
+sudo phpize
+sudo ./configure 
+sudo make && make install
+```
+
 修改php.ini
 ```angularjs
 [xhprof]
@@ -114,6 +125,10 @@ $controlIPs = false;
 //$controlIPs[] = "127.0.0.1";   // localhost, you'll want to add your own ip here
 //$controlIPs[] = "::1";         // localhost IP v6
 
+// 采样url白名单
+$controlUrls = false;
+//$controlUrls = array();
+//$controlUrls[] = "/userinfo";   //you'll want to add your own url here
 //$otherURLS = array();
 
 // 可忽略的采样方法
@@ -133,7 +148,7 @@ if($domain_weight = getenv('xhprof_weight')) {
 如果使用`mysql5.6` 会报` Incorrect integer value: '' for column 'cpu' at row 1`错误，请把表结构中的`int`字段都改成`varchar`；
 ```
   CREATE TABLE `details` (
- `id` char(17) NOT NULL default '0',
+ `id` char(17) NOT NULL,
  `url` varchar(255) NOT NULL default '',
  `c_url` varchar(255) NOT NULL default '',
  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -167,6 +182,12 @@ if($domain_weight = getenv('xhprof_weight')) {
     auto_prepend_file=/var/www/xhprof/external/header.php
     ```
 * 访问采样数据，请求`/xhprof/xhprof_html/index.php`
+示例网站
+* 访问网站[9aipay.com](http://www.9aipay.com)
+* 采样数据[xhprof ui](http://www.9aipay.com/xhprof/xhprof_html/)
+> 更多精彩
+* [mac——tools](http://www.9aipay.com/mysite)
+
 效果图：
     * 首页列表 ![首页列表](./statics/homelist.png)
     * 调用详细1 ![调用详细1](./statics/detail1.png)
