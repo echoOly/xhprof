@@ -41,7 +41,7 @@ brew install php5-xhprof php5-mysql
 ```
 
 > 注意：
-> php5.4及以上版本不能在pecl中下载，不支持。需要在github上下载https://github.com/facebook/xhprof。
+> 对于xhprof扩展，php5.4及以上版本不能在pecl中下载，不支持。需要在github上下载https://github.com/facebook/xhprof。
 > 另外xhprof已经很久没有更新过了，截至目前还不支持php7。
 ```
 git clone https://github.com/facebook/xhprof 
@@ -126,6 +126,10 @@ $controlIPs = false;
 //$controlIPs[] = "127.0.0.1";   // localhost, you'll want to add your own ip here
 //$controlIPs[] = "::1";         // localhost IP v6
 
+// 采样url白名单
+$controlUrls = false;
+//$controlUrls = array();
+//$controlUrls[] = "/userinfo";   //you'll want to add your own url here
 //$otherURLS = array();
 
 // 可忽略的采样方法
