@@ -42,10 +42,9 @@ brew install php5-xhprof php5-mysql
 
 > 注意：
 > 对于xhprof扩展，php5.4及以上版本不能在pecl中下载，不支持。需要在github上下载https://github.com/facebook/xhprof。
-> 另外xhprof已经很久没有更新过了，截至目前还不支持php7。
+> 另外xhprof已经很久没有更新过了，截至目前还不支持php7。当前目录extension已经存在源代码，只需要编译一下，如下：
 ```
-git clone https://github.com/facebook/xhprof 
-cd xhprof/extension/
+cd extension/
 sudo phpize
 sudo ./configure 
 sudo make && make install
