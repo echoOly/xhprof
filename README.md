@@ -182,6 +182,11 @@ if($domain_weight = getenv('xhprof_weight')) {
     auto_prepend_file=/var/www/xhprof/external/header.php
     ```
 * 访问采样数据，请求`/xhprof/xhprof_html/index.php`
+示例网站
+* 访问网站[9aipay.com](http://www.9aipay.com)
+* 采样数据[xhprof ui](http://www.9aipay.com/xhprof/xhprof_html/)
+> 更多精彩
+* [mac——tools](http://www.9aipay.com/mysite)
 效果图：
     * 首页列表 ![首页列表](./statics/homelist.png)
     * 调用详细1 ![调用详细1](./statics/detail1.png)
