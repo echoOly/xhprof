@@ -133,7 +133,7 @@ if($domain_weight = getenv('xhprof_weight')) {
 如果使用`mysql5.6` 会报` Incorrect integer value: '' for column 'cpu' at row 1`错误，请把表结构中的`int`字段都改成`varchar`；
 ```
   CREATE TABLE `details` (
- `id` char(17) NOT NULL default '0',
+ `id` char(17) NOT NULL,
  `url` varchar(255) NOT NULL default '',
  `c_url` varchar(255) NOT NULL default '',
  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
