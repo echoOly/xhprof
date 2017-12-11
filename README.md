@@ -186,7 +186,7 @@ if($domain_weight = getenv('xhprof_weight')) {
 * 访问网站[9aipay.com](http://www.9aipay.com)
 * 采样数据[xhprof ui](http://www.9aipay.com/xhprof/xhprof_html/)
 > 更多精彩
-* [mac——tools](http://www.9aipay.com/mysite)
+* [mac——tools](http://www.9aipay.com/book)
 
 效果图：
     * 首页列表 ![首页列表](./statics/homelist.png)
