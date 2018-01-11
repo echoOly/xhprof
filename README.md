@@ -174,6 +174,35 @@ if($domain_weight = getenv('xhprof_weight')) {
  KEY `timestamp` (`timestamp`)
  ) ENGINE=innodb DEFAULT CHARSET=utf8;  
 ```
+mysql5.6
+```
+CREATE TABLE `details` (
+  `id` char(17) NOT NULL DEFAULT '0',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `c_url` varchar(255) NOT NULL DEFAULT '',
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `server name` varchar(64) NOT NULL DEFAULT '',
+  `perfdata` mediumblob,
+  `type` tinyint(4) NOT NULL DEFAULT '0',
+  `cookie` blob,
+  `post` blob,
+  `get` blob,
+  `pmu` varchar(11) NOT NULL DEFAULT '0',
+  `wt` varchar(11) NOT NULL DEFAULT '0',
+  `cpu` varchar(11) NOT NULL DEFAULT '0',
+  `server_id` varchar(32) NOT NULL DEFAULT 't11',
+  `aggregateCalls_include` varchar(255) NOT NULL DEFAULT '',
+  `log_id` char(17) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `url` (`url`),
+  KEY `c_url` (`c_url`),
+  KEY `cpu` (`cpu`),
+  KEY `wt` (`wt`),
+  KEY `pmu` (`pmu`),
+  KEY `timestamp` (`timestamp`),
+  KEY `log_id` (`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+```
 * 引入监控入口文件 `xhprof/external/header.php`
     * 在需要监控的项目的`index.php`，直接引入：
     ```
