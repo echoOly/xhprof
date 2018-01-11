@@ -147,7 +147,7 @@ if($domain_weight = getenv('xhprof_weight')) {
 * 创建数据库 并导入表结构：
 如果使用`mysql5.6` 会报` Incorrect integer value: '' for column 'cpu' at row 1`错误，请把表结构中的`int`字段都改成`varchar`；
 ```
-  CREATE TABLE `details` (
+   CREATE TABLE `details` (
  `id` char(17) NOT NULL,
  `url` varchar(255) NOT NULL default '',
  `c_url` varchar(255) NOT NULL default '',
@@ -157,20 +157,22 @@ if($domain_weight = getenv('xhprof_weight')) {
  `type` tinyint(4) NOT NULL default '0',
  `cookie` BLOB,
  `post` BLOB,
- `get` BLOB,
+ `get` BLOB, 
  `pmu` int(11) unsigned NOT NULL  default '0',
  `wt` int(11) unsigned NOT NULL default '0',
  `cpu` int(11) unsigned NOT NULL default '0',
  `server_id` varchar(32) NOT NULL default 't11',
  `aggregateCalls_include` varchar(255) NOT NULL  DEFAULT '',
+ `log_id` char(17) NOT NULL,
  PRIMARY KEY  (`id`),
  KEY `url` (`url`),
  KEY `c_url` (`c_url`),
  KEY `cpu` (`cpu`),
  KEY `wt` (`wt`),
  KEY `pmu` (`pmu`),
+ KEY `log_id` (`log_id`),
  KEY `timestamp` (`timestamp`)
- ) ENGINE=innodb DEFAULT CHARSET=utf8;
+ ) ENGINE=innodb DEFAULT CHARSET=utf8;  
 ```
 * 引入监控入口文件 `xhprof/external/header.php`
     * 在需要监控的项目的`index.php`，直接引入：
